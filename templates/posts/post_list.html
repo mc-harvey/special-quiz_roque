@@ -34,8 +34,8 @@
                                                 <i class="bi bi-three-dots"></i>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                <li><a class="dropdown-item" href="{% url 'posts:post-update' post.slug %}" onclick="event.preventDefault(); window.location.href=this.href;">Edit</a></li>
-                                                <li><a class="dropdown-item text-danger" href="{% url 'posts:post-delete' post.slug %}" onclick="event.preventDefault(); window.location.href=this.href;">Delete</a></li>
+                                                <li><a class="dropdown-item" href="{% url 'posts:post_update' post.slug %}" onclick="event.preventDefault(); window.location.href=this.href;">Edit</a></li>
+                                                <li><a class="dropdown-item text-danger" href="{% url 'posts:post_delete' post.slug %}" onclick="event.preventDefault(); window.location.href=this.href;">Delete</a></li>
                                             </ul>
                                         </div>
                                     {% endif %}

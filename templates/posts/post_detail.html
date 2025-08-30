@@ -6,7 +6,7 @@
         <div class="col-lg-8">
             <!-- Navigation -->
             <div class="d-flex align-items-center py-4">
-                <a href="{% url 'posts:post-list' %}" class="text-decoration-none text-dark">
+                <a href="{% url 'posts:post_list' %}" class="text-decoration-none text-dark">
                     <i class="bi bi-arrow-left"></i> Back to Feed
                 </a>
             </div>
@@ -29,11 +29,11 @@
                                     <i class="bi bi-three-dots"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item d-flex align-items-center" href="{% url 'posts:post-update' object.slug %}">
+                                    <li><a class="dropdown-item d-flex align-items-center" href="{% url 'posts:post_update' object.slug %}">
                                         <i class="bi bi-pencil me-2"></i> Edit
                                     </a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item d-flex align-items-center text-danger" href="{% url 'posts:post-delete' object.slug %}">
+                                    <li><a class="dropdown-item d-flex align-items-center text-danger" href="{% url 'posts:post_delete' object.slug %}">
                                         <i class="bi bi-trash me-2"></i> Delete
                                     </a></li>
                                 </ul>
