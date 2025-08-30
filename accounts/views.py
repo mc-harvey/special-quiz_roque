@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from .models import Profile, CustomUser
 from jobs.models import Job, JobApplicant
+from .forms import ProfileForm
 
 # Create your views here.
 
@@ -82,14 +83,33 @@ def signin_view(request):
         if user is not None:
             login(request, user)
             if not Profile.objects.filter(user=user).exists():
-                print('User does not have a profile.')
-            print('User has a profile.')
+                messages.info(request, "Please complete your profile.")
+                return redirect('auth:profile_create')
+            return redirect('posts:post_list')
         else:
             messages.error(request, 'Invalid email or password')
     return render(request, 'auth/signin.html')
 
 def profile_create_view(request):
-    pass
+    if Profile.objects.filter(user=request.user).exists():
+        messages.info(request, "Profile already exists.")
+        return redirect('auth:profile_view')
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            messages.success(request, "Profile created successfully!")
+            return redirect('posts:post_list')
+    else:
+        form = ProfileForm()
+
+    return render(request, 'auth/profile_create.html', {'form': form})
+
+
+
 def profile_view(request):
     if not request.user.is_authenticated:
         messages.error(request, 'Please sign in first.')
@@ -98,20 +118,15 @@ def profile_view(request):
     profile = Profile.objects.filter(user=request.user).first()
     if profile:
         user = request.user
-        if user.is_admin and user.is_staff:
-            job_posted = Job.objects.filter(user=user)
-            context = {
-                'profile': profile,
-                'job_posted': job_posted,
-                'user': user,
-            }
-        else:
-            applied_jobs = JobApplicant.objects.filter(user=user)
-            context = {
-                'profile': profile,
-                'applied_jobs': applied_jobs,
-                'user': user,
-            }
+        job_posted = Job.objects.filter(user=user)  # show only jobs created by the user
+        applied_jobs = JobApplicant.objects.filter(user=user)
+
+        context = {
+            'profile': profile,
+            'user': user,
+            'job_posted': job_posted,   # jobs this user posted
+            'applied_jobs': applied_jobs,  # jobs this user applied for
+        }
         return render(request, 'auth/profile_view.html', context)
     else:
         messages.info(request, 'Profile does not exist.')

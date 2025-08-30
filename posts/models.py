@@ -2,7 +2,9 @@ from django.db import models
 import random
 
 def get_filename_ext(filepath):
-    pass
+    base_name = os.path.basename(filepath)
+    name, ext = os.path.splitext(base_name)
+    return name, ext
 
 def upload_image_path(instance, filename):
     new_filename = random.randint(1, 151251251)

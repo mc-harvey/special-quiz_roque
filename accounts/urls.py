@@ -6,5 +6,6 @@ urlpatterns = [
     path('signout/', logout_view, name='signout'),
     path('signup/', signup_view, name='signup'),
     path('profile/', profile_view, name='profile_view'),
-    path('profile/create/', profile_create_view, name='profile_create'), #remove
+    path('profile/create/', profile_create_view, name='profile_create'),
+
 ]

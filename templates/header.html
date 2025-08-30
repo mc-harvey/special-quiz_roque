@@ -19,7 +19,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'post_list_view' %}active{% endif %}" 
-                           href="{% url 'posts:post-list' %}">
+                           href="{% url 'posts:post_list' %}">
                             Posts
                         </a>
                     </li>
@@ -66,8 +66,8 @@
                 <!-- Guest Navigation -->
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a href="{% url 'auth:signin' %}" class="btn btn-primary">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                        <a href="{% url 'auth:signup' %}" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign Up
                         </a>
                     </li>
                 </ul>

@@ -16,8 +16,6 @@ class PostListView(ListView):
             return redirect('auth:signin')
         return super().dispatch(request, *args, **kwargs)
     
-    
-    
 class PostDetailSlugView(DetailView):
     queryset = Post.objects.all()
     template_name = 'posts/post_detail.html'

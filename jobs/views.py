@@ -9,15 +9,31 @@ from .models import Job, JobApplicant
 
 # Create your views here.
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView
+from .models import Job
+from .forms import JobForm
+
 class JobCreateView(CreateView):
-    pass
+    model = Job
+    form_class = JobForm
+    template_name = 'jobs/job_create.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('jobs:job_detail_view', kwargs={'pk': self.object.pk})
+
 def job_list_view(request):
     jobs = Job.objects.all()
-    query = request.GET.get('q', None)
-    if query is not None:
+    query = request.GET.get('q')
+    if query:
         jobs = jobs.filter(
-            Q(job_title__icontains=query),
-            Q(job_description__icontains=query),
+            Q(job_title__icontains=query)|
+            Q(job_description__icontains=query)|
             Q(location__icontains=query)
         )
     context = {

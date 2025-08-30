@@ -9,7 +9,9 @@ def get_filename_ext(filepath):
     return name, ext
 
 def upload_image_path(instance, filename):
-    pass
+    user_id = instance.user.id
+    new_filename = f"user_{user_id}_{filename}"
+    return f"profile_pictures/{new_filename}"
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, password=None, is_active=True, is_staff=False, is_admin=False):
