@@ -23,16 +23,5 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            base = slugify(self.content[:50]) or str(random.randint(1000, 9999))
-            slug = base
-            counter = 1
-            while Post.objects.filter(slug=slug).exclude(pk=self.pk).exists():
-                slug = f"{base}-{counter}"
-                counter += 1
-            self.slug = slug
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f"Post by {self.user.username} on {self.created_at}"
