@@ -10,12 +10,16 @@ from .forms import PostForm
 class PostListView(ListView):
     model = Post
     template_name = 'posts/post_list.html'
-    
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.all().order_by('-created_at')
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('auth:signin')
         return super().dispatch(request, *args, **kwargs)
-    
+
 class PostDetailSlugView(DetailView):
     queryset = Post.objects.all()
     template_name = 'posts/post_detail.html'
@@ -32,8 +36,6 @@ class PostDeleteView(DeleteView):
         return obj
     
 class PostUpdateView(LoginRequiredMixin, UpdateView):
-
-    
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         if obj.user != self.request.user:
@@ -46,8 +48,9 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 class PostCreateView(CreateView):
     form_class = PostForm
     template_name = 'posts/post_create.html'
-    success_url = reverse_lazy('posts:post-list')
+    success_url = reverse_lazy('posts:post_list')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        form.instance.is_job = False  # Ensure regular posts are not marked as jobs
         return super().form_valid(form)

@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 
 from .views import job_list_view, job_detail_view, JobUpdateView, JobDeleteView, job_apply, JobCreateView
 

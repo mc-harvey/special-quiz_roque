@@ -15,10 +15,11 @@ from django.views.generic import CreateView
 from .models import Job
 from .forms import JobForm
 
-class JobCreateView(CreateView):
+class JobCreateView(LoginRequiredMixin, CreateView):
     model = Job
     form_class = JobForm
     template_name = 'jobs/job_create.html'
+    success_url = reverse_lazy('jobs:job_list_view')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -39,7 +40,7 @@ def job_list_view(request):
     context = {
         'jobs': jobs,
     }
-    return render(request, 'jobs/job_list.html')
+    return render(request, 'jobs/job_list.html', context)
 
 def job_detail_view(request, pk):
     try:
